@@ -1,0 +1,287 @@
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:#000;
+font-family:"degular-mono", Menlo, Monaco, "Courier New", monospace;
+}
+
+/* HEADER */
+
+.header-container{
+position:absolute;
+top:20%;
+left:50%;
+transform:translateX(-50%);
+text-align:center;
+color:#fff;
+z-index:10;
+pointer-events:none;
+width:100%;
+}
+
+h1{
+font-weight:300;
+font-size:2.8rem;
+line-height:1.25;
+letter-spacing:.02em;
+margin:0 0 35px 0;
+}
+
+/* SEPARATOR */
+
+.separator{
+display:flex;
+align-items:center;
+justify-content:center;
+width:220px;
+margin:0 auto;
+}
+
+.triangle-right{
+width:0;
+height:0;
+border-top:4px solid transparent;
+border-bottom:4px solid transparent;
+border-left:7px solid #fff;
+}
+
+.triangle-left{
+width:0;
+height:0;
+border-top:4px solid transparent;
+border-bottom:4px solid transparent;
+border-right:7px solid #fff;
+}
+
+.circle{
+width:6px;
+height:6px;
+background:#fff;
+border-radius:50%;
+}
+
+.line{
+height:1px;
+background:#fff;
+flex-grow:1;
+}
+
+/* STAGE */
+
+.stage{
+position:relative;
+width:100%;
+height:100%;
+}
+
+/* WALK ACROSS */
+
+@keyframes walkAcross{
+0%{transform:translateY(-50%) translateX(120vw) scaleX(-1);}
+100%{transform:translateY(-50%) translateX(-120vw) scaleX(-1);}
+}
+
+/* WALKER ROOT */
+
+popke{
+
+--dur:1.35s;
+--limb-width:0.02em;
+--limb-width-half:calc(var(--limb-width)*.5);
+
+position:absolute;
+top:82%;
+left:0;
+
+width:1px;
+height:1px;
+
+/* your fix */
+font-size:1.5vh;
+
+transform:translateY(-50%) translateX(120vw) scaleX(-1);
+
+transform-style:preserve-3d;
+/* pointer-events:none; */
+
+animation:walkAcross 12s linear infinite;
+animation-fill-mode:both;
+}
+
+/* BODY PARTS */
+
+popke *{
+
+position:absolute;
+top:calc(100% - var(--limb-width));
+left:var(--left,0em);
+
+display:grid;
+justify-items:center;
+
+width:calc(var(--limb-width) + var(--basis-width,0em));
+height:calc(var(--limb-width) + var(--basis-height,0em));
+
+background:#fff;
+border-radius:calc(var(--limb-width)*.5);
+
+transform-origin:var(--limb-width-half) var(--limb-width-half);
+transform-style:preserve-3d;
+
+animation-duration:var(--dur);
+animation-iteration-count:infinite;
+animation-timing-function:linear;
+}
+
+/* remove joint circles */
+
+popke *::before,
+popke *::after{
+content:none!important;
+}
+
+/* TORSO */
+
+@keyframes lijfMove{
+0%{translate:0 0;rotate:6deg;}
+25%{translate:0 -0.12em;rotate:5deg;}
+50%{translate:0 0;rotate:6deg;}
+75%{translate:0 -0.12em;rotate:7deg;}
+100%{translate:0 0;rotate:6deg;}
+}
+
+lijf{
+--basis-height:4em;
+animation-name:lijfMove;
+}
+
+bovenlijf{
+--basis-height:4em;
+top:unset;
+bottom:calc(100% - var(--limb-width));
+transform-origin:var(--limb-width-half) calc(100% - var(--limb-width-half));
+rotate:-6deg;
+}
+
+/* HEAD */
+
+hooft{
+--basis-width:1em;
+--basis-height:1em;
+--left:calc(var(--basis-width)*-.5);
+
+top:unset;
+bottom:calc(100% + .45em);
+
+background:var(--head,#fff);
+
+border-radius:0;
+border:var(--limb-width) solid #fff;
+}
+
+/* ARMS */
+
+@keyframes armMove{
+0%,100%{rotate:22deg;translate:-0.05em;}
+25%{rotate:8deg;}
+50%{rotate:-18deg;translate:0.08em;}
+75%{rotate:6deg;}
+}
+
+arm{
+--basis-height:3.2em;
+top:0;
+animation-name:armMove;
+}
+
+arm[rechts]{transform:translateZ(2.5em);}
+arm[links]{transform:translateZ(-2.5em);animation-delay:calc(var(--dur)*-.5);}
+
+@keyframes onderarmMove{
+0%,100%{rotate:10deg;}
+50%{rotate:-22deg;}
+}
+
+onderarm{
+--basis-height:3em;
+animation-name:onderarmMove;
+}
+
+@keyframes handMove{
+0%,100%{rotate:8deg;}
+50%{rotate:-14deg;}
+}
+
+hand{
+--basis-height:0.9em;
+animation-name:handMove;
+}
+
+/* LEGS */
+
+@keyframes beenMove{
+0%,100%{rotate:-26deg;translate:0.32em;}
+25%{rotate:-8deg;translate:0.10em;}
+50%{rotate:18deg;translate:-0.12em;}
+75%{rotate:-8deg;translate:0.10em;}
+}
+
+been{
+--basis-height:4.9em;
+animation-name:beenMove;
+}
+
+been[rechts]{transform:translateZ(2em);}
+been[links]{transform:translateZ(-2em);animation-delay:calc(var(--dur)*-.5);}
+
+@keyframes onderbeenMove{
+0%,100%{rotate:6deg;}
+25%{rotate:26deg;}
+50%{rotate:10deg;}
+75%{rotate:34deg;}
+}
+
+onderbeen{
+--basis-height:4.6em;
+animation-name:onderbeenMove;
+}
+
+@keyframes voetMove{
+0%,100%{rotate:-88deg;}
+50%{rotate:-78deg;}
+}
+
+voet{
+--basis-height:1.4em;
+rotate:-88deg;
+animation-name:voetMove;
+}
+
+@keyframes voorvoetMove{
+0%,100%{rotate:0deg;}
+50%{rotate:-16deg;}
+}
+
+voorvoet{
+--basis-height:0.9em;
+animation-name:voorvoetMove;
+}
+
+
+#introTitle{
+font-weight:300;
+font-size:2.8rem;
+line-height:1.25;
+letter-spacing:.02em;
+margin:0 0 35px 0;
+cursor:pointer;
+pointer-events:auto;
+}
+
+#introTitle:hover{
+opacity:0.7;
+}
